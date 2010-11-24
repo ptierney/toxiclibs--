@@ -1,4 +1,6 @@
 
+#pragma once
+
 #include <cinder/Vector.h>
 
 namespace toxi {

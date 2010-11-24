@@ -1,4 +1,6 @@
 
+#pragma once
+
 // this is comparable to VolumetricSpaceArray in the original toxilibs
 
 #include <vector>

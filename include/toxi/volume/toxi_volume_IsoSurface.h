@@ -1,4 +1,6 @@
 
+#pragma once
+
 #include <cinder/TriMesh.h>
 
 namespace toxi {

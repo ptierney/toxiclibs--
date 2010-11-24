@@ -1,4 +1,6 @@
 
+#pragma once
+
 #include <toxi/volume/toxi_volume_VolumetricBrush.h>
 
 namespace toxi {
