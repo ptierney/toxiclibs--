@@ -53,7 +53,7 @@ std::shared_ptr<ci::TriMesh> HashIsoSurface::computeSurfaceMesh(std::shared_ptr<
                 int cellIndex = getCellIndex(x, y, z);
                 cellIndexCache[sliceIndex + x] = (short) cellIndex;
                 if (cellIndex > 0 && cellIndex < 255) {
-                    int edgeFlags = MarchingCubesIndex.edgesToCompute[cellIndex];
+                    int edgeFlags = MarchingCubesIndex::edgesToCompute[cellIndex];
                     if (edgeFlags > 0 && edgeFlags < 255) {
                         int edgeOffsetIndex = offset * 3;
                         float offsetData = volume.getVoxelAt(offset);
@@ -108,9 +108,9 @@ void HashIsoSurface::createFacesForSlice(std::shared_ptr<ci::TriMesh> mesh, int 
             if (cellIndex > 0 && cellIndex < 255) {
                 int n = 0;
                 int edgeIndex;
-                const int* cellTriangles = MarchingCubesIndex.cellTriangles[cellIndex];
+                const int* cellTriangles = MarchingCubesIndex::cellTriangles[cellIndex];
                 while ((edgeIndex = cellTriangles[n]) != -1) {
-                    const int* edgeOffsetInfo = MarchingCubesIndex.edgeOffsets[edgeIndex];
+                    const int* edgeOffsetInfo = MarchingCubesIndex::edgeOffsets[edgeIndex];
                     face[n] =((x + edgeOffsetInfo[0]) + resX
                         * (y + edgeOffsetInfo[1]) + sliceRes
                         * (z + edgeOffsetInfo[2]))
