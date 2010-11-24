@@ -128,8 +128,8 @@ void HashIsoSurface::createFacesForSlice(std::shared_ptr<ci::TriMesh> mesh, int 
                                 mesh->appendVertex(*(va.get()));
                                 mesh->appendVertex(*(vb.get()));
                                 mesh->appendVertex(*(vc.get()));
-                                int nt = mesh->getNumTriangles();
-                                mesh->appendTriangle(nt - 3, nt - 2, nt - 1);
+                                int nv = mesh->getNumVertices();
+                                mesh->appendTriangle(nv - 3, nv - 2, nv - 1);
                             }
                         }
                     }

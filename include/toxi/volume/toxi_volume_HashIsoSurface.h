@@ -18,14 +18,16 @@ class HashIsoSurface : public IsoSurface {
 public:
     HashIsoSurface(VolumetricSpace&, float density = 0.5f);
 
-    std::shared_ptr<ci::TriMesh> computeSurfaceMesh(std::shared_ptr<ci::TriMesh> 
-        mesh, float iso);
+    // Override
+    virtual std::shared_ptr<ci::TriMesh> computeSurfaceMesh(
+        std::shared_ptr<ci::TriMesh> mesh, float iso);
 
     void createFacesForSlice(std::shared_ptr<ci::TriMesh> mesh, int z);
 
     int getCellIndex(int x, int y, int z);
 
-    void reset();
+    // Override
+    virtual void reset();
 
     void setExpectedDensity(float d);
 

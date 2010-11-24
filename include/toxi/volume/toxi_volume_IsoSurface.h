@@ -11,7 +11,8 @@ public:
     IsoSurface() { }
     virtual ~IsoSurface() { }
 
-    virtual ci::TriMesh computeSurfaceMesh(ci::TriMesh mesh, float iso) = 0;
+    virtual std::shared_ptr<ci::TriMesh> computeSurfaceMesh(
+        std::shared_ptr<ci::TriMesh>, float iso) = 0;
 
     virtual void reset() = 0;
 };
