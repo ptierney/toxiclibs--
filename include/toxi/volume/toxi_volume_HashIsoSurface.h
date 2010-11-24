@@ -19,7 +19,7 @@ public:
     std::shared_ptr<ci::TriMesh> computeSurfaceMesh(std::shared_ptr<ci::TriMesh> 
         mesh, float iso);
 
-    void createFacesForSlice(ci::TriMesh mesh, int z);
+    void createFacesForSlice(std::shared_ptr<ci::TriMesh> mesh, int z);
 
     int getCellIndex(int x, int y, int z);
 
@@ -39,12 +39,12 @@ protected:
     int sliceRes;
     int nextXY;
 
-    std::map<int, ci::Vec3f> edgeVertices;
+    std::map<int, std::shared_ptr<ci::Vec3f>> edgeVertices;
     float density;
 
     std::vector<short> cellIndexCache, prevCellIndexCache;
 
-}
+};
 
 }
 }

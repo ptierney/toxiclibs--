@@ -2,7 +2,11 @@ toxiclibs-- (toxiclibs minus minus)
 
 About:
 C++ port of the toxiclibs project (http://toxiclibs.org) developed by Karsten Schmidt
-Requires Cinder (http://libcinder.org)
+
+Requirements:
+- Cinder (http://libcinder.org)
+- C++ compiler with std::shared_ptr and multiple closing angle bracket support 
+  (eg vector<vector<int>>)
 
 Notes:
 I've tried to keep the style and naming conventions as close to those of 
