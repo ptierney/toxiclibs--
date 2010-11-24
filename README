@@ -1,8 +1,13 @@
 toxiclibs-- (toxiclibs minus minus)
 
+About:
 C++ port of the toxiclibs project (http://toxiclibs.org) developed by Karsten Schmidt
+Requires Cinder (http://libcinder.org)
 
-Downgraded, not improved.
+Notes:
+I've tried to keep the style and naming conventions as close to those of 
+the original java library. Otherwise, I follow the Google C++ style guide 
+(http://google-styleguide.googlecode.com/svn/trunk/cppguide.xml).
 
 Contributor:
 Patrick Tierney (patrick.l.tierney@gmail.com)
