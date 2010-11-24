@@ -40,13 +40,9 @@ public:
             "This VolumetricSpace implementation does not support setVoxelAt()"));
     }
 
-    int resX;
-    int resY;
-    int resZ;
+    int resX, resY, resZ;
 
-    int resX1;
-    int resY1;
-    int resZ1;
+    int resX1, resY1, resZ1;
 
     int sliceRes;
 
