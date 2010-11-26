@@ -14,8 +14,8 @@ public:
     virtual void clear() = 0;
 
     virtual void closeSides() { 
-        throw(std::runtime_error(
-            "This VolumetricSpace implementation does not support closeSides()"));
+        throw(std::runtime_error("This VolumetricSpace implementation \
+                                 does not support closeSides()"));
     }
 
     int getIndexFor(int x, int y, int z);
@@ -33,13 +33,13 @@ public:
     }
 
     virtual void setVoxelAt(int index, float value) {
-        throw(std::runtime_error(
-            "This VolumetricSpace implementation does not support setVoxelAt()"));
+        throw(std::runtime_error("This VolumetricSpace implementation \
+                                 does not support setVoxelAt()"));
     }
 
     virtual void setVoxelAt(int x, int y, int z, float value) {
-        throw(std::runtime_error(
-            "This VolumetricSpace implementation does not support setVoxelAt()"));
+        throw(std::runtime_error("This VolumetricSpace implementation \
+                                 does not support setVoxelAt()"));
     }
 
     int resX, resY, resZ;
