@@ -1,5 +1,4 @@
 
-#include <cinder/app/App.h>
 #include <cinder/CinderMath.h>
 
 #include <toxi/volume/toxi_volume_VolumetricSpace.h>

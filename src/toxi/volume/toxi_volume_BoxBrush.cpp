@@ -31,6 +31,11 @@ void BoxBrush::setSize(float size) {
 }
 
 void BoxBrush::setSize(float sizeX, float sizeY, float sizeZ) {
+    if (volume.scale.x == 0 || volume.scale.y == 0 ||
+        volume.scale.z == 0)
+        throw(std::runtime_error("Cannot set brush size when volume \
+                                 scale is equal to 0."));
+
     cellRadiusX = (int) (sizeX * 0.5f / volume.scale.x * volume.resX + 1);
     cellRadiusY = (int) (sizeY * 0.5f / volume.scale.y * volume.resY + 1);
     cellRadiusZ = (int) (sizeZ * 0.5f / volume.scale.z * volume.resZ + 1);

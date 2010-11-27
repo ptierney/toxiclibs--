@@ -20,7 +20,7 @@ public:
 
     int getIndexFor(int x, int y, int z);
 
-    ci::Vec3f getResolution() { return ci::Vec3f(resX, resY, resZ); }
+    ci::Vec3<int> getResolution() { return ci::Vec3<int>(resX, resY, resZ); }
     
     ci::Vec3f getScale() { return scale; }
 

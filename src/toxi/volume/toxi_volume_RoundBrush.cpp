@@ -1,5 +1,4 @@
 
-#include <cinder/app/App.h>
 #include <cinder/CinderMath.h>
 
 #include <toxi/volume/toxi_volume_RoundBrush.h>
@@ -41,10 +40,6 @@ void RoundBrush::drawAtGridPos(float cx, float cy, float cz, float density) {
 void RoundBrush::setSize(float r) {
     radius = r;
 
-    ci::app::console() << "Radius = " << radius << std::endl <<
-        "scale = " << volume.scale.x << std::endl << 
-        "resX = " << volume.resX << std::endl;
-
     if (volume.scale.x == 0 || volume.scale.y == 0 ||
         volume.scale.z == 0)
         throw(std::runtime_error("Cannot set brush size when volume \
@@ -55,12 +50,6 @@ void RoundBrush::setSize(float r) {
     cellRadiusZ = (int) (radius / volume.scale.z * volume.resZ) + 1;
     stretchY = (float) cellRadiusX / (float) cellRadiusY;
     stretchZ = (float) cellRadiusX / (float) cellRadiusZ;
-
-    ci::app::console() << cellRadiusX << std::endl <<
-        cellRadiusY << std::endl <<
-        cellRadiusZ << std::endl <<
-        stretchY << std::endl <<
-        stretchZ << std::endl;
 }
 
 }
