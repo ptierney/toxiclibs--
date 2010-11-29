@@ -83,6 +83,7 @@ std::shared_ptr<VolumetricSpace> MeshVoxelizer::voxelizeMesh(ci::TriMesh& mesh) 
 }
 
 std::shared_ptr<VolumetricSpace> MeshVoxelizer::voxelizeMesh(ci::TriMesh& mesh, float iso) {
+    /*
     //mesh.calcBoundingBox
     ci::AxisAlignedBox3f box = mesh.calcBoundingBox(); 
     ci::Vec3f bmin = box.getMin();
@@ -127,6 +128,7 @@ std::shared_ptr<VolumetricSpace> MeshVoxelizer::voxelizeMesh(ci::TriMesh& mesh, 
             }
         }
     }
+    */
     return volume;
 }
 
