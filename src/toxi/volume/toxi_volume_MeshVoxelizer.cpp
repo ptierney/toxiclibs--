@@ -5,6 +5,7 @@
 #include <toxi/volume/toxi_volume_MeshVoxelizer.h>
 #include <toxi/volume/toxi_volume_VolumetricSpace.h>
 #include <toxi/volume/toxi_volume_VolumetricSpaceVector.h>
+#include <toxi/math/toxi_math_ScaleMap.h>
 
 namespace toxi {
 namespace volume {
@@ -83,20 +84,25 @@ std::shared_ptr<VolumetricSpace> MeshVoxelizer::voxelizeMesh(ci::TriMesh& mesh) 
 }
 
 std::shared_ptr<VolumetricSpace> MeshVoxelizer::voxelizeMesh(ci::TriMesh& mesh, float iso) {
-    /*
+
     //mesh.calcBoundingBox
     ci::AxisAlignedBox3f box = mesh.calcBoundingBox(); 
     ci::Vec3f bmin = box.getMin();
     ci::Vec3f bmax = box.getMax();
-    ScaleMap wx = new ScaleMap(bmin.x, bmax.x, 1, volume.resX - 2);
-    ScaleMap wy = new ScaleMap(bmin.y, bmax.y, 1, volume.resY - 2);
-    ScaleMap wz = new ScaleMap(bmin.z, bmax.z, 1, volume.resZ - 2);
-    ScaleMap gx = new ScaleMap(1, volume.resX - 2, bmin.x, bmax.x);
-    ScaleMap gy = new ScaleMap(1, volume.resY - 2, bmin.y, bmax.y);
-    ScaleMap gz = new ScaleMap(1, volume.resZ - 2, bmin.z, bmax.z);
-    volume.setScale(box.getExtent().scale(2f));
+    toxi::math::ScaleMap wx(bmin.x, bmax.x, 1, volume->resX - 2);
+    toxi::math::ScaleMap wy(bmin.y, bmax.y, 1, volume->resY - 2);
+    toxi::math::ScaleMap wz(bmin.z, bmax.z, 1, volume->resZ - 2);
+    toxi::math::ScaleMap gx(1, volume->resX - 2, bmin.x, bmax.x);
+    toxi::math::ScaleMap gy(1, volume->resY - 2, bmin.y, bmax.y);
+    toxi::math::ScaleMap gz(1, volume->resZ - 2, bmin.z, bmax.z);
+
+    volume->setScale(box.getSize() * 2.f);
+
     Triangle tri = new Triangle();
-    AABB voxel = new AABB(new Vec3D(), volume.voxelSize.scale(0.5f));
+
+    ci::AxisAlignedBox3f voxel = ci::AxisAlignedBox3f(ci::Vec3f::zero(), 
+        volume->voxelSize * 0.5f);
+
     for (Face f : mesh.getFaces()) {
         tri.a = f.a;
         tri.b = f.b;
@@ -104,12 +110,10 @@ std::shared_ptr<VolumetricSpace> MeshVoxelizer::voxelizeMesh(ci::TriMesh& mesh, 
         ci::AxisAlignedBox3f bounds = tri.getBoundingBox();
         ci::Vec3f min = bounds.getMin();
         ci::Vec3f max = bounds.getMax();
-        min =
-                new Vec3D((int) wx.getClippedValueFor(min.x),
+        min = ci::Vec3f((int) wx.getClippedValueFor(min.x),
                         (int) wy.getClippedValueFor(min.y),
                         (int) wz.getClippedValueFor(min.z));
-        max =
-                new Vec3D((int) wx.getClippedValueFor(max.x),
+        max = ci::Vec3f((int) wx.getClippedValueFor(max.x),
                         (int) wy.getClippedValueFor(max.y),
                         (int) wz.getClippedValueFor(max.z));
         for (int z = (int) min.z; z <= max.z; z++) {
@@ -128,7 +132,6 @@ std::shared_ptr<VolumetricSpace> MeshVoxelizer::voxelizeMesh(ci::TriMesh& mesh, 
             }
         }
     }
-    */
     return volume;
 }
 
