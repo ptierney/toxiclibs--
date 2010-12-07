@@ -6,6 +6,7 @@
 #include <toxi/volume/toxi_volume_VolumetricSpace.h>
 #include <toxi/volume/toxi_volume_VolumetricSpaceVector.h>
 #include <toxi/math/toxi_math_ScaleMap.h>
+#include <toxi/geom/toxi_geom_AABB.h>
 
 namespace toxi {
 namespace volume {
@@ -84,8 +85,6 @@ std::shared_ptr<VolumetricSpace> MeshVoxelizer::voxelizeMesh(ci::TriMesh& mesh) 
 }
 
 std::shared_ptr<VolumetricSpace> MeshVoxelizer::voxelizeMesh(ci::TriMesh& mesh, float iso) {
-
-    //mesh.calcBoundingBox
     ci::AxisAlignedBox3f box = mesh.calcBoundingBox(); 
     ci::Vec3f bmin = box.getMin();
     ci::Vec3f bmax = box.getMax();
@@ -98,29 +97,38 @@ std::shared_ptr<VolumetricSpace> MeshVoxelizer::voxelizeMesh(ci::TriMesh& mesh, 
 
     volume->setScale(box.getSize() * 2.f);
 
-    Triangle tri = new Triangle();
+    ci::TriMesh tri = ci::TriMesh();
+    ci::Vec3f a, b, c;
 
-    ci::AxisAlignedBox3f voxel = ci::AxisAlignedBox3f(ci::Vec3f::zero(), 
+    geom::AABB voxel = geom::AABB(ci::Vec3f::zero(), 
         volume->voxelSize * 0.5f);
 
-    for (Face f : mesh.getFaces()) {
-        tri.a = f.a;
-        tri.b = f.b;
-        tri.c = f.c;
-        ci::AxisAlignedBox3f bounds = tri.getBoundingBox();
+    for (int i = 0; i < mesh.getNumTriangles(); ++i) {
+        mesh.getTriangleVertices(i, &a, &b, &c);
+
+        tri.clear();
+        tri.appendVertex(a);
+        tri.appendVertex(b);
+        tri.appendVertex(c);
+        tri.appendTriangle(0, 1, 2);
+
+        ci::AxisAlignedBox3f bounds = tri.calcBoundingBox();
+
         ci::Vec3f min = bounds.getMin();
         ci::Vec3f max = bounds.getMax();
+
         min = ci::Vec3f((int) wx.getClippedValueFor(min.x),
                         (int) wy.getClippedValueFor(min.y),
                         (int) wz.getClippedValueFor(min.z));
         max = ci::Vec3f((int) wx.getClippedValueFor(max.x),
                         (int) wy.getClippedValueFor(max.y),
                         (int) wz.getClippedValueFor(max.z));
+
         for (int z = (int) min.z; z <= max.z; z++) {
             for (int y = (int) min.y; y <= max.y; y++) {
                 for (int x = (int) min.x; x <= max.x; x++) {
-                    if (x < volume.resX1 && y < volume.resY1
-                            && z < volume.resZ1) {
+                    if (x < volume->resX1 && y < volume->resY1
+                            && z < volume->resZ1) {
                         voxel.set((float) gx.getClippedValueFor(x),
                                 (float) gy.getClippedValueFor(y),
                                 (float) gz.getClippedValueFor(z));
