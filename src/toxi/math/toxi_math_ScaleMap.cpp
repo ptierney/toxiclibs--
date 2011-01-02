@@ -2,6 +2,7 @@
 #include <toxi/math/toxi_math_ScaleMap.h>
 #include <toxi/math/toxi_math_InterpolateStrategy.h>
 #include <toxi/util/datatypes/toxi_util_datatypes_DoubleRange.h>
+#include <toxi/math/toxi_math_LinearInterpolation.h>
 
 namespace toxi {
 namespace math {
@@ -9,6 +10,8 @@ namespace math {
 ScaleMap::ScaleMap(double minIn, double maxIn, double minOut, double maxOut) {
     setInputRange(minIn, maxIn);
     setOutputRange(minOut, maxOut);
+
+    mapFunction = std::shared_ptr<InterpolateStrategy>(new LinearInterpolation());
 }
 
 double ScaleMap::getClippedValueFor(double val) {

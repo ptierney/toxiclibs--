@@ -13,14 +13,14 @@ namespace volume {
 
 MeshVoxelizer::MeshVoxelizer(int res) {
     volume = std::shared_ptr<VolumetricSpace>(new VolumetricSpaceVector(
-        ci::Vec3f::one(), res, res, res));
+        ci::Vec3f::one() * 100.0f, res, res, res));
 
     init();
 }
 
 MeshVoxelizer::MeshVoxelizer(int resX, int resY, int resZ) {
     volume = std::shared_ptr<VolumetricSpace>(new VolumetricSpaceVector(
-        ci::Vec3f::one(), resX, resY, resZ));
+        ci::Vec3f::one() * 100.0f, resX, resY, resZ));
 
     init();
 }
@@ -95,11 +95,13 @@ std::shared_ptr<VolumetricSpace> MeshVoxelizer::voxelizeMesh(ci::TriMesh& mesh, 
     toxi::math::ScaleMap gy(1, volume->resY - 2, bmin.y, bmax.y);
     toxi::math::ScaleMap gz(1, volume->resZ - 2, bmin.z, bmax.z);
 
-    volume->setScale(box.getSize() * 2.f);
+    // don't need to scale by 2 since cinder aabb returns full extent
+    volume->setScale(box.getSize());
 
     ci::TriMesh tri = ci::TriMesh();
     ci::Vec3f a, b, c;
 
+    // set the position and the extent
     geom::AABB voxel = geom::AABB(ci::Vec3f::zero(), 
         volume->voxelSize * 0.5f);
 

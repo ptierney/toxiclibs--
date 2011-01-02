@@ -4,13 +4,14 @@
 namespace toxi {
 namespace volume {
 
-VolumetricSpaceVector::VolumetricSpaceVector(ci::Vec3f scl, int rX, int rY, int rZ)
-    : VolumetricSpace(scl, rX, rY, rZ) {
+VolumetricSpaceVector::VolumetricSpaceVector(ci::Vec3f scl, int rX_, int rY_, int rZ_)
+    : VolumetricSpace(scl, rX_, rY_, rZ_), rX(rX_), rY(rY_), rZ(rZ_) {
     data.resize(rX * rY * rZ);
 }
 
 void VolumetricSpaceVector::clear() {
     data.clear();
+    data.resize(rX * rY * rZ);
 }
 
 void VolumetricSpaceVector::setVolumeSidesTo(float density) {

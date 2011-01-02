@@ -33,6 +33,8 @@ public:
 protected:
     std::vector<float> data;
 
+    int rX, rY, rZ;
+
 };
 
 }
