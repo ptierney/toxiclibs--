@@ -1,6 +1,7 @@
 
 #include <cinder/TriMesh.h>
 #include <cinder/AxisAlignedBox.h>
+#include <cinder/app/App.h>
 
 #include <toxi/volume/toxi_volume_MeshVoxelizer.h>
 #include <toxi/volume/toxi_volume_VolumetricSpace.h>
@@ -86,8 +87,11 @@ std::shared_ptr<VolumetricSpace> MeshVoxelizer::voxelizeMesh(ci::TriMesh& mesh) 
 
 std::shared_ptr<VolumetricSpace> MeshVoxelizer::voxelizeMesh(ci::TriMesh& mesh, float iso) {
     ci::AxisAlignedBox3f box = mesh.calcBoundingBox(); 
-    ci::Vec3f bmin = box.getMin();
-    ci::Vec3f bmax = box.getMax();
+    //ci::Vec3f bmin = box.getMin();
+    //ci::Vec3f bmax = box.getMax();
+    // note: maybe the voxel space calculated here should be the same in my other programs
+    ci::Vec3f bmin = -volume->halfScale;
+    ci::Vec3f bmax = volume->halfScale;
     toxi::math::ScaleMap wx(bmin.x, bmax.x, 1, volume->resX - 2);
     toxi::math::ScaleMap wy(bmin.y, bmax.y, 1, volume->resY - 2);
     toxi::math::ScaleMap wz(bmin.z, bmax.z, 1, volume->resZ - 2);
@@ -96,14 +100,16 @@ std::shared_ptr<VolumetricSpace> MeshVoxelizer::voxelizeMesh(ci::TriMesh& mesh, 
     toxi::math::ScaleMap gz(1, volume->resZ - 2, bmin.z, bmax.z);
 
     // don't need to scale by 2 since cinder aabb returns full extent
-    volume->setScale(box.getSize());
+    //volume->setScale(box.getSize());
 
     ci::TriMesh tri = ci::TriMesh();
     ci::Vec3f a, b, c;
 
-    // set the position and the extent
+    // set the position (will get changed) and the extent
     geom::AABB voxel = geom::AABB(ci::Vec3f::zero(), 
         volume->voxelSize * 0.5f);
+
+    ci::app::console() << volume->voxelSize * 0.5f << std::endl;
 
     for (int i = 0; i < mesh.getNumTriangles(); ++i) {
         mesh.getTriangleVertices(i, &a, &b, &c);
@@ -119,6 +125,8 @@ std::shared_ptr<VolumetricSpace> MeshVoxelizer::voxelizeMesh(ci::TriMesh& mesh, 
         ci::Vec3f min = bounds.getMin();
         ci::Vec3f max = bounds.getMax();
 
+        // go from world coords to voxel int coords
+
         min = ci::Vec3f((int) wx.getClippedValueFor(min.x),
                         (int) wy.getClippedValueFor(min.y),
                         (int) wz.getClippedValueFor(min.z));
@@ -126,11 +134,16 @@ std::shared_ptr<VolumetricSpace> MeshVoxelizer::voxelizeMesh(ci::TriMesh& mesh, 
                         (int) wy.getClippedValueFor(max.y),
                         (int) wz.getClippedValueFor(max.z));
 
+        ci::app::console() << min << " : " << max << std::endl;
+
         for (int z = (int) min.z; z <= max.z; z++) {
             for (int y = (int) min.y; y <= max.y; y++) {
                 for (int x = (int) min.x; x <= max.x; x++) {
                     if (x < volume->resX1 && y < volume->resY1
                             && z < volume->resZ1) {
+
+                        // go from voxel int coords back to world coords
+                        // and set AABB position
                         voxel.set((float) gx.getClippedValueFor(x),
                                 (float) gy.getClippedValueFor(y),
                                 (float) gz.getClippedValueFor(z));
